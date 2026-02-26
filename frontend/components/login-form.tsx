@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,13 +16,113 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import React, { ChangeEvent, useState } from "react"
+
+import LoadingSpinner from "@/components/loading"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircleIcon } from "lucide-react"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+
+
+  const [loading, setLoading] = useState<boolean>(false)
+  const [alertShow, setAlertShow] = useState<boolean>(false)
+  const [alertTitle, setAlertTitle] = useState<string>("")
+  const [alertDescription, setAlertDescription] = useState<string>("")
+  type logindatatype = {
+
+    email: String
+    password: String
+
+  }
+
+  const [formdata, setformdata] = useState<logindatatype>({
+
+    email: "",
+    password: ""
+
+  });
+
+
+  const handle_input_changed = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setformdata(prevData => ({
+
+      ...prevData,
+      [name]: value
+
+    }));
+
+
+  }
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+        {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formdata),
+        }
+      )
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setAlertTitle("Login Failed")
+        setAlertDescription(data.message || "Invalid credentials")
+        setAlertShow(true)
+        return
+      }
+
+      setAlertTitle("Login Successful")
+      setAlertDescription("Redirecting to dashboard...")
+      setAlertShow(true)
+
+    } catch (error) {
+      setAlertTitle("Error")
+      setAlertDescription("Something went wrong")
+      setAlertShow(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn(" relative flex flex-col gap-6", className)} {...props}>
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <LoadingSpinner />
+        </div>
+      )}
+
+      {alertShow && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <Alert variant="destructive" className="max-w-md">
+            <AlertCircleIcon />
+            <AlertTitle>{alertTitle}</AlertTitle>
+            <AlertDescription>
+              {alertDescription}
+              <Button
+                className="mt-4"
+                onClick={() => setAlertShow(false)}
+              >
+                Close
+              </Button>
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
@@ -30,10 +131,10 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
-         
+
                 <Button variant="outline" type="button">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -53,6 +154,8 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  onChange={handle_input_changed}
+                  name="email"
                   required
                 />
               </Field>
@@ -66,7 +169,7 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" name="password" onChange={handle_input_changed} required />
               </Field>
               <Field>
                 <Button type="submit">Login</Button>

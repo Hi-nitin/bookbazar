@@ -13,6 +13,11 @@ import { Input } from "@/components/ui/input"
 import { ChangeEvent, useState } from "react"
 import { log } from "console"
 import LoadingSpinner from '@/components/loading'
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
+
+
+import { AlertCircleIcon } from "lucide-react"
+
 
 export function SignupForm({
   className,
@@ -36,6 +41,9 @@ export function SignupForm({
     confirmPassword: "",
   });
   const [loading, setloading] = useState<boolean>(false);
+  const [alertshow, setalertshow] = useState<boolean>(false);
+  const [title4alert, setalerttitle] = useState<String>('')
+  const [description4alert, setalertdescription] = useState<String>('')
 
 
   const handle_input_changed = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,9 +60,13 @@ export function SignupForm({
     e.preventDefault();
 
     setloading(true);
-    
+
     if (formdata.password !== formdata.confirmPassword) {
-      alert(' p d m')
+      setloading(false);
+
+      setalertdescription('Type a same password.');
+      setalerttitle('Password does not match')
+      setalertshow(true)
       return null;
     }
 
@@ -71,19 +83,30 @@ export function SignupForm({
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message || 'signup error')
+        setloading(false);
+
+        setalertdescription('Error happens');
+        setalerttitle('This error happens due to ' + data.message)
+        setalertshow(true);
         return null;
       }
+      setloading(false);
 
-      alert('successfully login')
+      setalertdescription('Redirecting to dashboard.');
+      setalerttitle('Login successfull')
+      setalertshow(true)
 
     } catch (error) {
       console.log(error);
+      setloading(false);
 
-      alert('error signing up');
+      setalertdescription('Error due to ' + error);
+      setalerttitle('Error occured.')
+      setalertshow(true)
 
+    } finally {
+      setloading(false)
     }
-
 
   }
 
@@ -93,6 +116,22 @@ export function SignupForm({
       {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
           <LoadingSpinner />
+        </div>
+      )}
+
+      {alertshow && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <Alert variant="destructive" className="max-w-md">
+            <AlertCircleIcon />
+            <AlertTitle>{title4alert}</AlertTitle>
+
+            <AlertDescription>
+              {description4alert}
+              <Button size="lg" variant="outline" onClick={() => setalertshow(false)}>Try again</Button>
+            </AlertDescription>
+
+          </Alert>
+
         </div>
       )}
 
@@ -219,3 +258,12 @@ export function SignupForm({
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
