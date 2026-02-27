@@ -85,7 +85,7 @@ export function LoginForm({
         return
       }
 
-      setAlertTitle("Login Successful")
+      setAlertTitle("Login Successful");
       setAlertDescription("Redirecting to dashboard...")
       setAlertShow(true)
 

@@ -37,13 +37,13 @@ const loginValidator = [
     .notEmpty().withMessage('Email is required')
     .isEmail().withMessage('Invalid email format'),
 
- 
+
   check('password')
     .notEmpty().withMessage('Password is required')
     .isLength({ min: 8 }).withMessage('Minimum length of 8 is required'),
 
-  
+
 ];
 
 
-module.exports = { signupValidator,loginValidator };
+module.exports = { signupValidator, loginValidator };

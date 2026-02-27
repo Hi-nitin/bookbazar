@@ -1,6 +1,9 @@
 const bookModel = require('../models/bookModel');
 const cloudinary = require('../config/cloudinary');
 const streamifier = require("streamifier");
+const catchAsync = require('../utilsfolder/catchAsync');
+const AppError = require('../utilsfolder/apperror');
+
 
 const uploadToCloudinary = (fileBuffer, folder) => {
     return new Promise((resolve, reject) => {
@@ -19,12 +22,12 @@ const uploadToCloudinary = (fileBuffer, folder) => {
 exports.createBook = async (req, res) => {
 
     const { name, about, price, address } = req.body;
- 
-    
+
+
     try {
 
         if (!req.files?.mainImage) {
-            
+
             return res.status(400).json({
                 message: 'main image is required please.'
             })
@@ -35,7 +38,7 @@ exports.createBook = async (req, res) => {
             "books/main"
         );
 
-   
+
 
         let additionalImages = [];
 
@@ -81,3 +84,49 @@ exports.createBook = async (req, res) => {
 }
 
 
+
+
+const deleteBookfunction = async (req, res) => {
+    const { bookid } = req.body;
+
+    if (!bookid) {
+        throw new AppError("Book ID is required", 400);
+    }
+
+    const deletebook = await bookModel.findByIdAndDelete(bookid);
+
+    if (!deletebook) {
+
+        if (!deletebook) {
+            throw new AppError("Book not found.Failed to delete book.", 404);
+        }
+    }
+
+    return res.status(200).json({
+        message: "your book has been deleted."
+    })
+
+};
+
+
+const getbookfunction = async (req, res) => {
+
+    const { bookid } = req.body;
+
+    if (!bookid) {
+        throw new AppError("Book ID is required", 400);
+    }
+
+    const getBook = await bookModel.findById(bookid);
+
+    if (!getBook) {
+        throw new AppError("No books on sales", 400);
+    }
+    return res.status(200).json({
+        data: getBook
+    })
+
+}
+
+exports.deleteBook = catchAsync(deleteBookfunction);
+exports.getBook = catchAsync(getbookfunction);

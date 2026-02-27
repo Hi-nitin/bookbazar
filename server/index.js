@@ -10,15 +10,19 @@ conn();
 
 //routes
 const authRoutes = require('./routes/authRoutes');
-const testRoutes = require('./routes/testRoutes')
-const bookRoutes = require('./routes/bookroutes')
+const testRoutes = require('./routes/testRoutes');
+const bookRoutes = require('./routes/bookroutes');
+
 
 
 app.use(cors())
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 
 app.use('/test', testRoutes);
+
+
 app.use('/api/book', bookRoutes);
 
 
