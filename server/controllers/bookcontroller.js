@@ -93,14 +93,18 @@ const deleteBookfunction = async (req, res) => {
         throw new AppError("Book ID is required", 400);
     }
 
-    const deletebook = await bookModel.findByIdAndDelete(bookid);
+    const findbook = await bookModel.findById(bookid);
 
-    if (!deletebook) {
+    if (!findbook) {
+        throw new AppError("Book not found.Failed to delete book.", 404);
 
-        if (!deletebook) {
-            throw new AppError("Book not found.Failed to delete book.", 404);
-        }
     }
+
+    if (findbook.userId.toString() !== userId) {
+        throw new AppError("You are not authorized to delete this book", 403);
+    }
+
+    await bookModel.findByIdAndDelete(bookid);
 
     return res.status(200).json({
         message: "your book has been deleted."
@@ -109,7 +113,7 @@ const deleteBookfunction = async (req, res) => {
 };
 
 
-const getbookfunction = async (req, res) => {
+const getthisbookfunction = async (req, res) => {
 
     const { bookid } = req.body;
 
@@ -128,5 +132,110 @@ const getbookfunction = async (req, res) => {
 
 }
 
+
+
+
+const updateBookfunction = async (req, res) => {
+
+    const { bookid } = req.body;
+
+    if (!bookid) {
+        throw new AppError("Book ID is required", 400);
+    }
+
+    const book = await bookModel.findById(bookid);
+
+    if (!book) {
+        throw new AppError("Book not found", 404);
+    }
+
+
+    if (book.userId.toString() !== userId) {
+        throw new AppError("You are not authorized to update this book", 403);
+    }
+
+    const { name, about, price, address } = req.body;
+
+    if (name) book.name = name;
+    if (about) book.about = about;
+    if (price) book.price = price;
+    if (address) book.address = address;
+
+
+    if (req.files?.mainImage) {
+
+        const mainImageUpload = await uploadToCloudinary(
+            req.files.mainImage[0].buffer,
+            "books/main"
+        );
+
+        book.mainImage = mainImageUpload.secure_url;
+    }
+
+
+    if (req.files?.additionalImages) {
+
+        let newImages = [];
+
+        for (const file of req.files.additionalImages) {
+            const upload = await uploadToCloudinary(
+                file.buffer,
+                "books/additional"
+            );
+
+            newImages.push(upload.secure_url);
+        }
+
+        book.additionalImages = newImages;
+    }
+
+    await book.save();
+
+    res.status(200).json({
+        message: "Book updated successfully",
+
+    });
+
+};
+
+
+
+
+const getallbookfunction = async (req, res) => {
+
+
+    const getBook = await bookModel.find().select("-userId");
+
+    if (!getBook) {
+        throw new AppError("No books found", 400);
+    }
+    return res.status(200).json({
+        data: getBook
+    })
+
+}
+
+
+
+
+
+const getmybookfunction = async (req, res) => {
+
+
+    const getBook = await bookModel.find({ userId: userId });
+
+    if (!getBook) {
+        throw new AppError("No books on sales", 400);
+    }
+    return res.status(200).json({
+        data: getBook
+    })
+
+}
+
+
+exports.updateBook = catchAsync(updateBookfunction);
 exports.deleteBook = catchAsync(deleteBookfunction);
-exports.getBook = catchAsync(getbookfunction);
+exports.getthisBook = catchAsync(getthisbookfunction);
+exports.getallBook = catchAsync(getallbookfunction);
+exports.getmyBook = catchAsync(getmybookfunction);
