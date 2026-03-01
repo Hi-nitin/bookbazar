@@ -203,13 +203,56 @@ const updateBookfunction = async (req, res) => {
 
 const getallbookfunction = async (req, res) => {
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = 2;
 
-    const getBook = await bookModel.find().select("-userId");
+    const skip = (page - 1) * limit;
+
+    //filter hone fere 
+
+    const { maxprice, minprice } = req.query;
+    var price;
+
+    if (minprice) {
+        price = {
+
+            $gte: Number(minprice),
+
+
+        }
+    }
+
+    if (maxprice) {
+        price = {
+
+
+            $lte: Number(maxprice)
+
+        }
+    }
+
+    if (maxprice) {
+        price = {
+
+            $gte: Number(minprice),
+            $lte: Number(maxprice)
+
+        }
+    }
+
+
+
+
+
+    const getBook = await bookModel.find({ price }).select("-userId").skip(skip).limit(limit);
+    const totalbooks = await bookModel.countDocuments();
 
     if (!getBook) {
         throw new AppError("No books found", 400);
     }
     return res.status(200).json({
+        totalbooks,
+        totalpages: Math.ceil(totalbooks / limit),
         data: getBook
     })
 
