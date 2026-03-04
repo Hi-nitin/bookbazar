@@ -13,7 +13,6 @@ export default function Home() {
 
       <LogoCloud />
       <Testimonials />
-<FooterSection/>
 
     </div>
   );

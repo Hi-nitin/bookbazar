@@ -21,7 +21,7 @@ export default function HeroSection() {
         <>
 
 
-            <Navbar />
+
 
             <main>
                 <section className="overflow-hidden">
