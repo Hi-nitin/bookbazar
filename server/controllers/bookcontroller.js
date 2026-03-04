@@ -115,13 +115,13 @@ const deleteBookfunction = async (req, res) => {
 
 const getthisbookfunction = async (req, res) => {
 
-    const { bookid } = req.body;
+    const { bookid } = req.params;
 
     if (!bookid) {
         throw new AppError("Book ID is required", 400);
     }
 
-    const getBook = await bookModel.findById(bookid);
+    const getBook = await bookModel.findById(bookid).populate("userId");
 
     if (!getBook) {
         throw new AppError("No books on sales", 400);

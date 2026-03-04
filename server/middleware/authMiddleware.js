@@ -14,7 +14,7 @@ exports.authMiddleware = async (req, res, next) => {
         try {
              decode = jwt.verify(token, process.env.JWT_SECRET);
         } catch (error) {
-            return res.status(401).json({ message: 'invalid token' })
+            return res.status(401).json({ error: 'invalid token' })
         }
 
 

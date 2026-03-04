@@ -14,7 +14,7 @@ router.post('/createbook', authMiddleware, uploadMiddleware.fields([{ name: "mai
 
 router.delete('/deletebook', authMiddleware, deleteBook);
 
-router.get('/getthisbook', authMiddleware, getthisBook);
+router.get('/getthisbook/:bookid', authMiddleware, getthisBook);
 
 router.get('/getallbook', authMiddleware, getallBook);
 

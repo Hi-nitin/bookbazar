@@ -11,9 +11,6 @@ import {
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-
-
-
 type propstype = {
     totalpages: number
 
@@ -34,8 +31,6 @@ export default function PaginationDemo({ totalpages }: propstype) {
         pages.push(i);
     }
 
-
-
     return (
 
         <>
@@ -43,7 +38,7 @@ export default function PaginationDemo({ totalpages }: propstype) {
                 <PaginationContent>
 
                     <PaginationItem>
-                        <PaginationPrevious  href={`${siteUrl}${currentPage-1}`} />
+                        <PaginationPrevious href={`${siteUrl}${currentPage - 1}`} />
                     </PaginationItem>
 
                     {pages.map((val) => (
@@ -62,7 +57,7 @@ export default function PaginationDemo({ totalpages }: propstype) {
                     </PaginationItem>
 
                     <PaginationItem>
-   <PaginationPrevious  href={`${siteUrl}${currentPage+1}`} />
+                        <PaginationPrevious href={`${siteUrl}${currentPage + 1}`} />
                     </PaginationItem>
 
                 </PaginationContent>

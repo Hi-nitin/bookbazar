@@ -35,6 +35,7 @@ const getbookdata = async (pagenum:number) => {
 
 
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTNjNzA3ZWY0NWYzYTllZWNiNmRiNyIsImlhdCI6MTc3MjM0MjY4N30.QkjTiGqILvTXd4xJXbMjGuunVdcaK2ioUyl2xhSPoXo"
+   
     try {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/book/getallbook?page=${pagenum}`,
@@ -108,6 +109,7 @@ export default async function Bookstore(props: PageProps) {
                         price={val.price}
                         address={val.address}
                         mainImage={val.mainImage}
+                        bookid={val._id}
                     />
                 ))}
 
