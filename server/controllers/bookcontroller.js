@@ -22,6 +22,8 @@ const uploadToCloudinary = (fileBuffer, folder) => {
 exports.createBook = async (req, res) => {
 
     const { name, about, price, address } = req.body;
+    console.log(req.body);
+    
 
 
     try {

@@ -58,41 +58,41 @@ export default async function Showbook({ params }: props) {
 
     const { bookid } = await params;
 
+    const images: string[] = []
+
+
+
     const getbookdata = await fetchbook(bookid);
     const bookdata = getbookdata.data;
     console.log(bookdata);
 
+    images.push(bookdata.mainImage, bookdata.additionalImages[0], bookdata.additionalImages[1], bookdata.additionalImages[1])
 
-
-    const images = [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvAljt2CRnukkxptiKDkN_-NpT987J7FO_IGrvJ-WBm9V_0h-tw2T4PvmOlvhXdgOfqx4LS0AkZESfNG5zEk84P46YumQoKR8mUCS3ug&s=10",
-        "https://www.battersea.org.uk/sites/default/files/animal_images/068Nz00000glmcDIAQ.webp"
-    ]
 
     return (
         <>
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-                    {/* Carousel */}
+
                     <div className="w-full">
                         <Carousel images={images} />
                     </div>
 
-                    {/* Book Details */}
+
                     <div className="flex flex-col gap-6">
 
-                        {/* Title */}
+
                         <h1 className="text-3xl font-bold text-heading">
                             {bookdata.name}
                         </h1>
 
-                        {/* Price */}
+
                         <p className="text-2xl font-semibold text">
-                            Rs {bookdata.price} only
+                            Rs {bookdata.price} -/ only
                         </p>
 
-                        {/* Description */}
+
                         <div className="bg-neutral-light dark:bg-neutral-dark p-4 rounded-lg border border-border">
                             <h2 className="text-lg font-semibold mb-2 text-heading">About this book</h2>
                             <p className="text-body leading-relaxed">
@@ -100,7 +100,7 @@ export default async function Showbook({ params }: props) {
                             </p>
                         </div>
 
-                        {/* Seller Info */}
+
                         <div className="bg-card dark:bg-card-dark border border-border rounded-xl shadow-sm p-6">
                             <h3 className="text-xl font-semibold mb-4 text-heading">
                                 Seller Information
@@ -132,7 +132,7 @@ export default async function Showbook({ params }: props) {
                                 </TableBody>
                             </Table>
 
-                            {/* WhatsApp button */}
+
                             <a
                                 href={`https://wa.me/${bookdata.userId.phone}`}
                                 target="_blank"
