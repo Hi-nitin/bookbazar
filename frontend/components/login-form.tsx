@@ -22,6 +22,7 @@ import LoadingSpinner from "@/components/loading"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircleIcon } from "lucide-react"
 
+
 export function LoginForm({
   className,
   ...props
@@ -58,8 +59,9 @@ export function LoginForm({
 
     }));
 
-
   }
+
+  
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
@@ -86,7 +88,16 @@ export function LoginForm({
       }
 
       setAlertTitle("Login Successful");
-      setAlertDescription("Redirecting to dashboard...")
+
+      try {
+        document.cookie = `token_value=${data.token}; path=/; max-age=86400`
+        setAlertDescription("Redirecting to dashboard...")
+      } catch (e) {
+        setAlertDescription("failed to set cookies");
+        setAlertShow(true)
+        return;
+      }
+
       setAlertShow(true)
 
     } catch (error) {
