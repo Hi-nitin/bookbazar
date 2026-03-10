@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid"
+import getCookie from "@/lib/getcookies"
 
 export default function UploadBook() {
   // text states
@@ -44,8 +45,10 @@ export default function UploadBook() {
     })
 
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTNjNzA3ZWY0NWYzYTllZWNiNmRiNyIsImlhdCI6MTc3MjM0MjY4N30.QkjTiGqILvTXd4xJXbMjGuunVdcaK2ioUyl2xhSPoXo"
+ 
+    const token =getCookie('token_value');
 
+    if(!token) return;
 
     try {
       setLoading(true)

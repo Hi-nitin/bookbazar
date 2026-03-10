@@ -19,13 +19,13 @@ export default function Navbar() {
     }, [])
 
     const TokenMenuItems = [
-        { name: 'Sale your book', href: 'createbook' },
-         { name: 'My books', href: 'mybook' },
-        { name: 'Buy a book', href: 'bookstore' },
+        { name: 'Sale your book', href: '/createbook' },
+        { name: 'My books', href: '/mybook' },
+        { name: 'Buy a book', href: '/bookstore' },
     ]
 
 
-     const NoTokenMenuItems = [
+    const NoTokenMenuItems = [
         { name: 'Features', href: '#' },
         { name: 'About', href: '#' },
     ]
@@ -81,17 +81,17 @@ export default function Navbar() {
                                                     </Link>
                                                 </li>
                                             ))}</>) : (<>
-                                             {NoTokenMenuItems.map((item, index) => (
-                                        <li key={index}>
-                                            <Link
-                                                href={item.href}
-                                                className="text-muted-foreground hover:text-accent-foreground block duration-150">
-                                               
-                                               
-                                                <span>{item.name}</span>
-                                            </Link>
-                                        </li>
-                                    ))}
+                                                {NoTokenMenuItems.map((item, index) => (
+                                                    <li key={index}>
+                                                        <Link
+                                                            href={item.href}
+                                                            className="text-muted-foreground hover:text-accent-foreground block duration-150">
+
+
+                                                            <span>{item.name}</span>
+                                                        </Link>
+                                                    </li>
+                                                ))}
                                             </>)
                                     }
 
@@ -110,7 +110,7 @@ export default function Navbar() {
                                             window.location.reload()
                                         }}
 
-                                        asChild
+                                       
                                         variant="outline"
                                         size="sm">
                                         <Link href="/signup">
@@ -119,7 +119,7 @@ export default function Navbar() {
                                     </Button> : (
                                         <>
                                             <Button
-                                                asChild
+                                               
                                                 variant="outline"
                                                 size="sm">
                                                 <Link href="/signup">
@@ -128,7 +128,7 @@ export default function Navbar() {
                                             </Button>
 
                                             <Button
-                                                asChild
+                                               
                                                 variant="outline"
                                                 size="sm">
                                                 <Link href="/login">
@@ -138,27 +138,7 @@ export default function Navbar() {
                                         </>
                                     )
                                 }
-                                {/* <Button
-                                    asChild
-                                    variant="outline"
-                                    size="sm">
-                                    <Link href="/signup">
-                                        <span>signup</span>
-                                    </Link>
-                                </Button>
-
-                                <Button
-                                    asChild
-                                    size="sm">
-                                    <Link href="/login">
-                                        <span>Login</span>
-                                    </Link>
-                                </Button> */}
-
-
-
-
-
+                                
                                 <Themetoggle />
 
                             </div>

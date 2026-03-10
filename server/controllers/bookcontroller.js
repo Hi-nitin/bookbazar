@@ -251,6 +251,8 @@ const getmybookfunction = async (req, res) => {
 
 
     const getBook = await bookModel.find({ userId: userId });
+    console.log(userId);
+    
 
     if (!getBook) {
         throw new AppError("No books on sales", 400);

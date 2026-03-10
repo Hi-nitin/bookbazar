@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import React, { ChangeEvent, useState } from "react"
-
+import { useRouter } from "next/navigation"
 import LoadingSpinner from "@/components/loading"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircleIcon } from "lucide-react"
@@ -28,7 +28,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
 
-
+  const router = useRouter()
 
   const [loading, setLoading] = useState<boolean>(false)
   const [alertShow, setAlertShow] = useState<boolean>(false)
@@ -61,7 +61,7 @@ export function LoginForm({
 
   }
 
-  
+
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
@@ -91,7 +91,9 @@ export function LoginForm({
 
       try {
         document.cookie = `token_value=${data.token}; path=/; max-age=86400`
-        setAlertDescription("Redirecting to dashboard...")
+        setAlertDescription("Redirecting to dashboard...");
+        router.push('bookstore')
+
       } catch (e) {
         setAlertDescription("failed to set cookies");
         setAlertShow(true)
