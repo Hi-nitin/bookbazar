@@ -76,6 +76,7 @@ export function Cardcompo2(params: any) {
 
 
     const router = useRouter();
+
     const handleclick = () => {
 
         router.push(`book/${params.bookid}`);
@@ -117,7 +118,12 @@ export function Cardcompo2(params: any) {
 
     const handleEdit = () => {
 
+        router.push(`/modifybook/${params.bookid}`)
+
     }
+
+
+
     return (
         <Card className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] overflow-hidden pt-0 shadow-sm hover:shadow-md transition-all">
 

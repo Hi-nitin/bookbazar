@@ -20,7 +20,7 @@ router.get('/getallbook', authMiddleware, getallBook);
 
 router.get('/getmybook', authMiddleware, getmyBook);
 
-router.patch('/updatebook', authMiddleware, uploadMiddleware.fields([{ name: "mainImage", maxCount: 1 },
+router.post('/updatebook', authMiddleware, uploadMiddleware.fields([{ name: "mainImage", maxCount: 1 },
 { name: "additionalImages", maxCount: 3 },
 ]), updateBook);
 

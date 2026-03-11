@@ -15,7 +15,12 @@ const bookRoutes = require('./routes/bookroutes');
 
 
 
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "patch", "DELETE"],
+    
+}))
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
