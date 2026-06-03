@@ -21,9 +21,7 @@ const uploadToCloudinary = (fileBuffer, folder) => {
 
 exports.createBook = async (req, res) => {
 
-    const { name, about, price, address } = req.body;
-    console.log(req.body);
-    
+    const { name, about, price, categoryId, address } = req.body;
 
 
     try {
@@ -65,6 +63,7 @@ exports.createBook = async (req, res) => {
             name,
             about,
             price,
+            categoryId,
             address,
             mainImage: mainImageUpload.secure_url,
             additionalImages,
@@ -77,6 +76,8 @@ exports.createBook = async (req, res) => {
         })
 
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({
             message: "Failed to keep your book in sales ! ",
             error: error,
@@ -123,7 +124,7 @@ const getthisbookfunction = async (req, res) => {
         throw new AppError("Book ID is required", 400);
     }
 
-    const getBook = await bookModel.findById(bookid).populate("userId");
+    const getBook = await bookModel.findById(bookid).populate("userId").populate("categoryId");
 
     if (!getBook) {
         throw new AppError("No books on sales", 400);
@@ -252,7 +253,7 @@ const getmybookfunction = async (req, res) => {
 
     const getBook = await bookModel.find({ userId: userId });
     console.log(userId);
-    
+
 
     if (!getBook) {
         throw new AppError("No books on sales", 400);
@@ -262,6 +263,10 @@ const getmybookfunction = async (req, res) => {
     })
 
 }
+
+
+
+
 
 
 exports.updateBook = catchAsync(updateBookfunction);

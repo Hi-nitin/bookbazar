@@ -9,6 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import Navbar from "@/app/components/Navbar"
 
 interface props {
     params: {
@@ -71,6 +72,7 @@ export default async function Showbook({ params }: props) {
 
     return (
         <>
+        <Navbar/>
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 

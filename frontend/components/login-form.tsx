@@ -104,7 +104,9 @@ export function LoginForm({
 
     } catch (error) {
       setAlertTitle("Error")
-      setAlertDescription("Something went wrong")
+      setAlertDescription("Something went wrongs"+error);
+      console.log(error);
+      
       setAlertShow(true)
     } finally {
       setLoading(false)

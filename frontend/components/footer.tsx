@@ -1,6 +1,6 @@
 import { Logo } from '@/components/logo'
 import Link from 'next/link'
-
+import Image from 'next/image'
 const links = [
     {
         title: 'Features',
@@ -36,9 +36,17 @@ export default function FooterSection() {
                     href="/"
                     aria-label="go home"
                     className="mx-auto block size-fit">
-                    <Logo />
+ <Image
+                    src="/booklogo12.png"
+                    alt="Bookstore Logo"
+                    width={180}
+                    height={0}
+                    className="rounded-sm"
+                />
+
                 </Link>
 
+               
                 <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
                     {links.map((link, index) => (
                         <Link

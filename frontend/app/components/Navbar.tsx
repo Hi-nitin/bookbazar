@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Themetoggle from '@/components/theme-toggle'
 import getCookie from '@/lib/getcookies'
-
+import LogoImg from "@/app/utilsfolder/3b450900-6b4c-4c56-bfa3-169476f962da.jpg"
 export default function Navbar() {
 
 
@@ -43,7 +43,7 @@ export default function Navbar() {
         <header>
             <nav
                 data-state={menuState && 'active'}
-                className="fixed z-20 w-full border-b border-dashed bg-white backdrop-blur md:relative dark:bg-zinc-950/50 lg:dark:bg-transparent">
+                className="sticky z-20 w-full border-b border-dashed bg-white backdrop-blur md:relative dark:bg-zinc-950/50 lg:dark:bg-transparent">
                 <div className="m-auto max-w-5xl px-6">
                     <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
                         <div className="flex w-full justify-between lg:w-auto">
@@ -51,7 +51,14 @@ export default function Navbar() {
                                 href="/"
                                 aria-label="home"
                                 className="flex items-center space-x-2">
-                                <Logo />
+
+                                <Image
+                                    src="/booklogo12.png"
+                                    alt="Bookstore Logo"
+                                    width={180}
+                                    height={0}
+                                    className="rounded-sm"
+                                />
                             </Link>
 
                             <button
@@ -110,7 +117,7 @@ export default function Navbar() {
                                             window.location.reload()
                                         }}
 
-                                       
+
                                         variant="outline"
                                         size="sm">
                                         <Link href="/signup">
@@ -119,7 +126,7 @@ export default function Navbar() {
                                     </Button> : (
                                         <>
                                             <Button
-                                               
+
                                                 variant="outline"
                                                 size="sm">
                                                 <Link href="/signup">
@@ -128,7 +135,7 @@ export default function Navbar() {
                                             </Button>
 
                                             <Button
-                                               
+
                                                 variant="outline"
                                                 size="sm">
                                                 <Link href="/login">
@@ -138,7 +145,7 @@ export default function Navbar() {
                                         </>
                                     )
                                 }
-                                
+
                                 <Themetoggle />
 
                             </div>

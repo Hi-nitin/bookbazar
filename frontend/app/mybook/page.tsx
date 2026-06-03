@@ -5,6 +5,7 @@ import { exportTraceState } from "next/dist/trace";
 import { useEffect, useState } from "react";
 import { Cardcompo2 } from "../components/cardcompo";
 import { Spinner } from "@/components/ui/spinner";
+import Navbar from "../components/Navbar";
 
 type Booktype = {
     _id: string
@@ -64,7 +65,7 @@ export default function Mybook() {
 
     return (
         <>
-
+<Navbar/>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center px-4">
 

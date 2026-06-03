@@ -5,6 +5,7 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid"
 import getCookie from "@/lib/getcookies"
 import { useParams } from "next/navigation";
 import { log } from "console";
+import Navbar from "@/app/components/Navbar";
 
 export default function UploadBook() {
   // text states
@@ -24,19 +25,19 @@ export default function UploadBook() {
   const token = getCookie('token_value');
 
   if (!token) {
-    alert('no token found');
+
     return;
   };
   if (!bookid) {
-    alert('no bookid ');
-    return ;
+
+    return;
   };
 
   const fetchmybookdata = async () => {
 
     try {
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/book/updatebook`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/book/getthisbook/${bookid}`, {
         headers: {
           token: token
         }
@@ -50,7 +51,15 @@ export default function UploadBook() {
       }
 
       const data = await res.json();
-      alert(data.message)
+      console.log(data.data);
+      const { name, price, mainImage, about, address } = data.data;
+      const additionalImages = data.data.additionalImages;
+      setBookName(name)
+      setPrice(price);
+      setAddress(address)
+      setAbout(about)
+      setMainPreview(mainImage)
+      setExtraPreviews([additionalImages[0], additionalImages[1], additionalImages[2]])
 
     } catch (error) {
       alert('error happen ');
@@ -63,7 +72,7 @@ export default function UploadBook() {
   }
 
   useEffect(() => {
-
+    fetchmybookdata();
   }, [])
 
 
@@ -131,6 +140,9 @@ export default function UploadBook() {
   }
 
   return (
+    <>
+   <Navbar/>
+
     <form
       onSubmit={handleSubmit}
       className="mx-auto max-w-3xl p-4 sm:p-6"
@@ -268,5 +280,7 @@ export default function UploadBook() {
 
       </div>
     </form>
+    </>
+    
   )
 }

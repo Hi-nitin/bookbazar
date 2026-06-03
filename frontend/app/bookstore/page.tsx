@@ -15,6 +15,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import Navbar from "../components/Navbar";
 
 type propstype = {
     totalpages: number
@@ -31,11 +32,11 @@ interface PageProps {
 }
 
 
-const getbookdata = async (pagenum:number) => {
+const getbookdata = async (pagenum: number) => {
 
 
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTNjNzA3ZWY0NWYzYTllZWNiNmRiNyIsImlhdCI6MTc3MjM0MjY4N30.QkjTiGqILvTXd4xJXbMjGuunVdcaK2ioUyl2xhSPoXo"
-   
+
     try {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/book/getallbook?page=${pagenum}`,
@@ -66,7 +67,7 @@ export default async function Bookstore(props: PageProps) {
     const searchParams = await props.searchParams;
     const pagenum = Number(searchParams?.page) || 1;
 
-    
+
     type bookresponse = {
         data: []
         totalpages: number
@@ -87,7 +88,7 @@ export default async function Bookstore(props: PageProps) {
     return (
 
         <main>
-
+            <Navbar />
             <form className="max-w-md mx-auto">
                 <label className="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
                 <div className="relative">

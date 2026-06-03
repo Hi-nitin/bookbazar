@@ -12,6 +12,7 @@ conn();
 const authRoutes = require('./routes/authRoutes');
 const testRoutes = require('./routes/testRoutes');
 const bookRoutes = require('./routes/bookroutes');
+const categoryRoutes = require("./routes/categoryRoutes");
 
 
 
@@ -27,7 +28,7 @@ app.use('/api/auth', authRoutes);
 
 app.use('/test', testRoutes);
 
-
+app.use("/api/categories", categoryRoutes);
 app.use('/api/book', bookRoutes);
 
 

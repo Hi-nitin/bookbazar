@@ -13,6 +13,14 @@ const bookSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Category",
+        required: true,
+        trim: true
+    },
+    
     about: {
         type: String,
         required: true
