@@ -264,11 +264,172 @@ const getmybookfunction = async (req, res) => {
 
 }
 
+const levenshtein = (a, b) => {
+    const matrix = Array.from({ length: b.length + 1 }, () => []);
+
+    for (let i = 0; i <= b.length; i++) matrix[i][0] = i;
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b[i - 1] === a[j - 1]) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
+    }
+
+    return matrix[b.length][a.length];
+};
+
+const getScore = (query, title) => {
+    const qWords = query.toLowerCase().split(" ");
+    const tWords = title.toLowerCase().split(" ");
+
+    let score = 0;
+
+    for (const qWord of qWords) {
+        for (const tWord of tWords) {
+
+            // exact match
+            if (tWord === qWord) {
+                score += 10;
+            }
+
+            // starts with
+            else if (tWord.startsWith(qWord)) {
+                score += 6;
+            }
+
+            // contains
+            else if (tWord.includes(qWord)) {
+                score += 4;
+            }
+
+            // fuzzy match
+            else if (levenshtein(qWord, tWord) <= 2) {
+                score += 2;
+            }
+        }
+    }
+
+    return score;
+};
+
+const getSearchBooks = async (req, res) => {
+    try {
+        const q = req.query.q?.toLowerCase().trim();
+
+        if (!q || q.length < 2) {
+            return res.json({ data: [] });
+        }
+
+        const books = await bookModel.find().select("name");
+
+        const scored = books.map(book => ({
+            name: book.name,
+            score: getScore(q, book.name)
+        }));
+
+        const uniqueNames = new Set();
+
+        const suggestions = scored
+            .filter(item => item.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .filter(item => {
+                const key = item.name.toLowerCase();
+
+                if (uniqueNames.has(key)) {
+                    return false;
+                }
+
+                uniqueNames.add(key);
+                return true;
+            })
+            .slice(0, 10)
+            .map(item => item.name);
+
+        return res.json({
+            data: suggestions
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: err.message
+        });
+    }
+};
+
+const getSearchResults = async (req, res) => {
+    try {
+        const q = req.query.q?.toLowerCase().trim();
+        const page = parseInt(req.query.page) || 1;
+        const limit = 6;
+        const skip = (page - 1) * limit;
+
+        if (!q || q.length < 1) {
+            const books = await bookModel
+                .find()
+                .skip(skip)
+                .limit(limit);
+
+            const totalbooks = await bookModel.countDocuments();
+
+            return res.json({
+                data: books,
+                totalbooks,
+                totalpages: Math.ceil(totalbooks / limit),
+            });
+        }
+
+        // ✅ fetch FULL data (not only name)
+        const books = await bookModel.find().select(
+            "name about price address mainImage additionalImages"
+        );
+
+        // --- YOUR EXISTING SCORING ---
+        const scored = books.map(book => ({
+            book,
+            score: getScore(q, book.name)
+        }));
+
+        // filter + sort
+        const sorted = scored
+            .filter(item => item.score > 0)
+            .sort((a, b) => b.score - a.score);
+
+        const totalbooks = sorted.length;
+
+        // pagination AFTER scoring (IMPORTANT)
+        const paginated = sorted
+            .slice(skip, skip + limit)
+            .map(item => item.book);
+
+        return res.json({
+            data: paginated,
+            totalbooks,
+            totalpages: Math.ceil(totalbooks / limit),
+            page
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: err.message
+        });
+    }
+};
 
 
 
-
-
+exports.SearchResults = catchAsync(getSearchResults);
+exports.suggestBook = catchAsync(getSearchBooks);
 exports.updateBook = catchAsync(updateBookfunction);
 exports.deleteBook = catchAsync(deleteBookfunction);
 exports.getthisBook = catchAsync(getthisbookfunction);
