@@ -81,3 +81,48 @@ exports.login = async (req, res) => {
 
     }
 }
+
+
+
+// exports.login = async (req, res) => {
+//     try {
+//         const { email, password } = req.body;
+
+//         // find user
+//         const user = await UserModel.findOne({ email }).select("+password");
+
+//         if (!user) {
+//             return res.status(400).json({ message: "Invalid email" });
+//         }
+
+//         const isMatch = await bcrypt.compare(password, user.password);
+
+//         if (!isMatch) {
+//             return res.status(400).json({ message: "Password is incorrect." });
+//         }
+
+//         // create token
+//         const token = jwt.sign(
+//             { id: user._id },
+//             process.env.JWT_SECRET,
+//             { expiresIn: "7d" }
+//         );
+
+//         // ✅ SET COOKIE HERE
+//         res.cookie("token_value", token, {
+//             httpOnly: true,
+//             secure: false, // true in production (HTTPS)
+//             sameSite: "lax",
+//             path: "/",
+//             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+//         });
+
+//         return res.status(200).json({
+//             message: "Login successful",
+//         });
+
+//     } catch (error) {
+//         console.log(`error occured . Reason : ${error}`);
+//         return res.status(500).json({ message: "Server error" });
+//     }
+// };

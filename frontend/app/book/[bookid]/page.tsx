@@ -1,3 +1,4 @@
+
 import { log } from "console"
 import Carousel from "@/app/components/carousel"
 import {
@@ -18,19 +19,26 @@ interface props {
 }
 
 
+
+import { cookies } from "next/headers";
+    
+  
 const fetchbook = async (bookid: string) => {
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTNjNzA3ZWY0NWYzYTllZWNiNmRiNyIsImlhdCI6MTc3MjM0MjY4N30.QkjTiGqILvTXd4xJXbMjGuunVdcaK2ioUyl2xhSPoXo"
-
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token_value")?.value;
+  console.log(token);
+  
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/book/getthisbook/${bookid}`,
-
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/book/getthisbook/${bookid}`,
             {
-                cache: 'no-store',
                 headers: {
                     token: `${token}`,
                 },
-            });
+                cache: "no-store",
+            }
+        );
 
 
         if (!res.ok) {
@@ -72,7 +80,7 @@ export default async function Showbook({ params }: props) {
 
     return (
         <>
-        <Navbar/>
+            <Navbar />
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 

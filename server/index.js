@@ -3,6 +3,7 @@ const app = express();
 const conn = require('./db/db')
 const port = 5555;
 require('dotenv').config();
+const cookieParser = require("cookie-parser");
 const router = express.Router();
 const cors = require('cors')
 
@@ -19,9 +20,12 @@ const categoryRoutes = require("./routes/categoryRoutes");
 app.use(cors({
     origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "patch", "DELETE"],
-    
+    credentials: true,
+
 }))
 
+
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);

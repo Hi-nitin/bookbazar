@@ -36,16 +36,16 @@ interface PageProps {
 const getbookdata = async (pagenum: number) => {
 
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTNjNzA3ZWY0NWYzYTllZWNiNmRiNyIsImlhdCI6MTc3MjM0MjY4N30.QkjTiGqILvTXd4xJXbMjGuunVdcaK2ioUyl2xhSPoXo"
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTNjNzA3ZWY0NWYzYTllZWNiNmRiNyIsImlhdCI6MTc3MjM0MjY4N30.QkjTiGqILvTXd4xJXbMjGuunVdcaK2ioUyl2xhSPoXo"
 
     try {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/book/getallbook?page=${pagenum}`,
             {
                 cache: 'no-store',
-                headers: {
-                    token: `${token}`,
-                },
+                // headers: {
+                //     token: `${token}`,
+                // },
             })
 
         if (!response.ok) {
@@ -90,27 +90,31 @@ export default async function Bookstore(props: PageProps) {
 
         <main>
             <Navbar />
-           
-           <Searchbox/>
+
+            <Searchbox />
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center px-4">
 
-                {books.data?.map((val: Booktype) => (
-                    <Cardcompo
-                        key={val._id}
-                        title={val.name}
-                        about={val.about}
-                        price={val.price}
-                        address={val.address}
-                        mainImage={val.mainImage}
-                        bookid={val._id}
-                    />
-                ))}
+                {books.data.length ? (
+                    books.data.map((val: Booktype) => (
+                        <Cardcompo
+                            key={val._id}
+                            title={val.name}
+                            about={val.about}
+                            price={val.price}
+                            address={val.address}
+                            mainImage={val.mainImage}
+                            bookid={val._id}
+                        />
+                    ))
+                ) : (
+                    <p>No books available</p>
+                )}
 
             </div>
 
 
-            <Paginationcompo totalpages={books.totalpages} />
+            {/* <Paginationcompo totalpages={books?.totalpages} /> */}
 
 
         </main>

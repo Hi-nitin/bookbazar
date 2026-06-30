@@ -16,7 +16,7 @@ router.delete('/deletebook', authMiddleware, deleteBook);
 
 router.get('/getthisbook/:bookid', authMiddleware, getthisBook);
 
-router.get('/getallbook', authMiddleware, getallBook);
+router.get('/getallbook', getallBook);
 
 router.get('/getmybook', authMiddleware, getmyBook);
 

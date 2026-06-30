@@ -24,7 +24,7 @@ type Booktype = {
     additionalImages: string[];
 };
 
-// FETCH DATA FROM SERVER
+
 const getSearchResults = async (query: string) => {
     try {
         const res = await fetch(
@@ -48,7 +48,7 @@ export default async function SearchBookPage({
     searchParams
 }: PageProps) {
 
-    // ✅ FIX: unwrap both promises
+   
     const { searchquery } = await params;
     const sp = await searchParams;
 

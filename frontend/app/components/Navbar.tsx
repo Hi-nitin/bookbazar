@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import Themetoggle from '@/components/theme-toggle'
 import getCookie from '@/lib/getcookies'
 import LogoImg from "@/app/utilsfolder/3b450900-6b4c-4c56-bfa3-169476f962da.jpg"
+import { log } from 'console'
 export default function Navbar() {
 
 
@@ -15,6 +16,7 @@ export default function Navbar() {
 
     useEffect(() => {
         const cookie = getCookie("token_value")
+        console.log(cookie)
         setToken(cookie)
     }, [])
 
