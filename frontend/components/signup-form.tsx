@@ -15,7 +15,7 @@ import { log } from "console"
 import LoadingSpinner from '@/components/loading'
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 
-
+import { useRouter } from 'next/navigation';
 import { AlertCircleIcon } from "lucide-react"
 
 
@@ -23,7 +23,7 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-
+ const router = useRouter();
 
   type SignupFormtype = {
     name: String
@@ -94,7 +94,9 @@ export function SignupForm({
 
       setalertdescription('Redirecting to dashboard.');
       setalerttitle('Login successfull')
-      setalertshow(true)
+      // setalertshow(true)
+      alert("Login successfull")
+            router.push('/login');
 
     } catch (error) {
       console.log(error);
@@ -103,6 +105,7 @@ export function SignupForm({
       setalertdescription('Error due to ' + error);
       setalerttitle('Error occured.')
       setalertshow(true)
+      
 
     } finally {
       setloading(false)

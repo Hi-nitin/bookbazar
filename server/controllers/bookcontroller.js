@@ -207,7 +207,7 @@ const updateBookfunction = async (req, res) => {
 const getallbookfunction = async (req, res) => {
 
     const page = parseInt(req.query.page) || 1;
-    const limit = 6;
+    const limit = 10;
 
     const skip = (page - 1) * limit;
 

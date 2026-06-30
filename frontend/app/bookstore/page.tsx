@@ -114,7 +114,7 @@ export default async function Bookstore(props: PageProps) {
             </div>
 
 
-            {/* <Paginationcompo totalpages={books?.totalpages} /> */}
+            <Paginationcompo totalpages={books?.totalpages} />
 
 
         </main>

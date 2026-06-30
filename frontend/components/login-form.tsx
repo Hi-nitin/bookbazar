@@ -87,11 +87,12 @@ export function LoginForm({
         return
       }
 
-      setAlertTitle("Login Successful");
+      // setAlertTitle("Login Successful");
+      
 
       try {
         document.cookie = `token_value=${data.token}; path=/; max-age=86400`
-        setAlertDescription("Redirecting to dashboard...");
+        // setAlertDescription("Redirecting to dashboard...");
         router.push('bookstore')
 
       } catch (e) {

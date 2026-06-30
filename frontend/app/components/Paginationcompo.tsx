@@ -23,7 +23,7 @@ export default function PaginationDemo({ totalpages }: propstype) {
 
     const currentPage = Number(searchParams.get("page")) || 1;
 
-    const siteUrl = "http://localhost:3000/bookstore?page="
+    const siteUrl = `${window.location.origin}/bookstore?page=`;
 
     const pages = [];
 
