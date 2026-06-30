@@ -18,11 +18,13 @@ const categoryRoutes = require("./routes/categoryRoutes");
 
 
 app.use(cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "patch", "DELETE"],
-    credentials: true,
-
-}))
+  origin: [
+    "http://localhost:3000",
+    "https://bookbazar-seven.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  credentials: true,
+}));
 
 
 app.use(cookieParser());
