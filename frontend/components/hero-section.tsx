@@ -8,6 +8,7 @@ import { useState } from 'react'
 import Themetoggle from '@/components/theme-toggle'
 import Navbar from '@/app/components/Navbar'
 
+import { useRouter } from 'next/navigation';
 const menuItems = [
     { name: 'Features', href: '#' },
     { name: 'Solution', href: '#' },
@@ -17,6 +18,7 @@ const menuItems = [
 
 export default function HeroSection() {
     const [menuState, setMenuState] = useState(false)
+      const router = useRouter();
     return (
         <>
 
@@ -50,7 +52,7 @@ export default function HeroSection() {
                                         </ul>
 
                                         {/* Right Side */}
-                                        <Button variant="outline">
+                                        <Button variant="outline" onClick={() => router.push('/bookstore')}>
                                             Explore Book
                                         </Button>
                                     </div>
